@@ -4,8 +4,19 @@ import { useEffect, useState } from "react";
 import Form from "./components/Form/Form";
 import TodoList from "./components/TodoList/TodoList";
 
+// get data from localstorage 
+const getLocaStorage = () => {
+  const data = JSON.parse(localStorage.getItem('clients'));
+  if (data) {
+    return data;
+  } else {
+    return [];
+  }
+}
+
+
 function App() {
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState(getLocaStorage());
   const [editItem, setEditItem] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -21,6 +32,7 @@ function App() {
       })
       setClients(updatedItem);
       setIsEdit(false);
+      localStorage.setItem('clients', JSON.stringify(clients));
     }
   }
 
@@ -34,15 +46,12 @@ function App() {
     setIsEdit(true);
     const tempItem = clients.find(item => item.id === id);
     setEditItem(tempItem);
-    console.log('Updated ', tempItem);
   }
 
+  // set data in localstorage 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('clients'));
-    if (data) {
-      setClients(data);
-    }
-  }, []);
+    localStorage.setItem('clients', JSON.stringify(clients));
+  }, [clients]);
 
   return (
     <section className="todo">

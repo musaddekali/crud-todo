@@ -37,6 +37,13 @@ function App() {
     console.log('Updated ', tempItem);
   }
 
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem('clients'));
+    if (data) {
+      setClients(data);
+    }
+  }, []);
+
   return (
     <section className="todo">
       <div className="container">

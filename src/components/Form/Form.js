@@ -1,26 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Form = () => {
+const Form = ({ handleAdd, editItem, isEdit }) => {
   const [formData, setFormData] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData) {
+      alert("Fill the field");
+      return;
+    }
+    handleAdd(formData);
     setFormData("");
-    console.log("Form Submitted ", formData);
   };
 
+  useEffect(() => {
+    if (isEdit) {
+      setFormData(editItem.name);
+    }
+  }, [isEdit, editItem]);
+
   return (
-    <div className="todo-form">
+    <div className="todo-form shadow">
       <form onSubmit={handleSubmit}>
         <input
           onChange={(e) => setFormData(e.target.value)}
           value={formData}
           type="text"
-          className="form-control"
+          className="todo-input"
           placeholder="Add Client..."
         />
-        <button type="submit" className="btn btn-success">
-          Add
+        <button type="submit" className="todo-submit-btn">
+          {isEdit ? 'Update' : 'Add'}
         </button>
       </form>
     </div>
